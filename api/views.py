@@ -1,15 +1,20 @@
 from api.serializers import ProductSerializer, OrderSerializer, ProductInfoSerializer
 from django.shortcuts import get_object_or_404 # type: ignore
 from django.db.models import Max
+from rest_framework import generics
 from rest_framework.response import Response # type: ignore
 from rest_framework.decorators import api_view # type: ignore
 from api.models import Product, Order,OrderItem 
 
-@api_view(['GET'])
+""" @api_view(['GET'])
 def product_list(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products, many = True) 
-    return Response(serializer.data)
+    return Response(serializer.data) """
+
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class= ProductSerializer
 
 @api_view(['GET'])
 def product_detail(request,pk):
