@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.response import Response # type: ignore
 from rest_framework.decorators import api_view # type: ignore
 from api.models import Product, Order,OrderItem 
+from rest_framework.permissions import IsAuthenticated
 
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.filter(stock__gt=0)
@@ -17,6 +18,17 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class=  OrderSerializer
+
+class UserOrderListAPIView(generics.ListAPIView):
+    queryset = Order.objects.prefetch_related('items__product')
+    serializer_class=  OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    "This view will return only the orders of the logged in user using the get_queryset method"
+    def get_queryset(self):
+        user = self.request.user
+        qs = super().get_queryset()
+        return qs.filter(user=user)
 
 
 @api_view(['GET'])
