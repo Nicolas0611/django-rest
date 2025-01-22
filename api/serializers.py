@@ -27,6 +27,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             'quantity',
             'item_subtotal'
         )
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
 

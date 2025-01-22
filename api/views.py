@@ -5,12 +5,20 @@ from rest_framework.response import Response # type: ignore
 from rest_framework.decorators import api_view # type: ignore
 from rest_framework.views import APIView
 from api.models import Product, Order,OrderItem 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (IsAuthenticated, IsAdminUser, AllowAny)
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class= ProductSerializer
+    
+    "self is a reference to the current instance of the class."
+    def get_permissions(self):
+        self.permission_classes = [AllowAny]
+        if self.request.method == 'POST':
+            self.permission_classes = [IsAdminUser]
+            "It is especially useful in inheritance, where you want to extend or override behavior but still use the parent class's implementation."
+        return super().get_permissions()
 
 
 "This are just a class for CreateAPIView overriding the create definition"
