@@ -8,17 +8,19 @@ from api.models import Product, Order,OrderItem
 from rest_framework.permissions import IsAuthenticated
 
 
-class ProductListAPIView(generics.ListAPIView):
+class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class= ProductSerializer
 
+
+"This are just a class for CreateAPIView overriding the create definition"
 class ProductCreateAPIView(generics.CreateAPIView):
     model = Product
     serializer_class = ProductSerializer
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):            
         print(request.data)
-        return super().create()
+        return super().create(request, *args, **kwargs)
 
 class ProductDetailAPIView(generics.RetrieveAPIView):   
     queryset = Product.objects.all()
