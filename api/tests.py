@@ -24,6 +24,6 @@ class UserOrderTestCase(TestCase):
     def test_user_order_endpoint_retrieves_error_on_not_auth_orders(self):
         response = self.client.get(reverse('user-orders')) 
         orders = response.json()    
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(orders['detail'], "Authentication credentials were not provided.")
     
