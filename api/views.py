@@ -6,11 +6,12 @@ from rest_framework.decorators import api_view # type: ignore
 from rest_framework.views import APIView
 from api.models import Product, Order,OrderItem 
 from rest_framework.permissions import (IsAuthenticated, IsAdminUser, AllowAny)
-
+from api.filters import ProductFilter
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class= ProductSerializer
+    filterset_class= ProductFilter
     
     "self is a reference to the current instance of the class."
     def get_permissions(self):
